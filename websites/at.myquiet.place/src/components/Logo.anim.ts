@@ -1,6 +1,6 @@
 import { AnimText } from '../modules/animtext';
 
-export const CHARS = 'ABCDEFGHIJKLOPQRSTVUYWXZ';
+export const CHARS = 'abcdefghijklmnopqrstuvwxyz';
 
 export type Lines =
     | [

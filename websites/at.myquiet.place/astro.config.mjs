@@ -5,8 +5,8 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.ueuie.dev',
-  output: 'hybrid',
+  site: 'https://at.myquiet.place/',
+  output: 'server',
   adapter: cloudflare({
     imageService: 'compile',
     runtime: {
@@ -15,8 +15,5 @@ export default defineConfig({
     }
   }),
   integrations: [partytown(), mdx()],
-  cacheDir: '.astro',
-  experimental: {
-    contentCollectionCache: true
-  },
+  cacheDir: '.astro'
 });

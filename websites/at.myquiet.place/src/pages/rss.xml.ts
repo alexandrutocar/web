@@ -4,9 +4,9 @@ import type { APIContext } from 'astro';
 export function GET(context: APIContext) {
     return rss({
         // `<title>` field in output xml
-        title: '[B]Log',
+        title: 'at my quiet place',
         // `<description>` field in output xml
-        description: `Alex' Blog about development, design and security.`,
+        description: `my personal blog about life, software and hardware`,
         // Pull in your project "site" from the endpoint context
         // https://docs.astro.build/en/reference/api-reference/#contextsite
         site: context.site!,

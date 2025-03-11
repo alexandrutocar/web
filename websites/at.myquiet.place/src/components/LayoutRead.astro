@@ -1,8 +1,8 @@
 ---
-import type { MarkdownHeading } from 'astro';
-import Layout from '~/components/LayoutBase.astro';
-import Button from '~/components/atoms/Button.astro';
-import ReaderTools from '~/components/ReaderTools.astro';
+import type { MarkdownHeading } from "astro";
+import Layout from "~/components/LayoutBase.astro";
+import Button from "~/components/atoms/Button.astro";
+import ReaderTools from "~/components/ReaderTools.astro";
 
 type Props = { headings: MarkdownHeading[] };
 
@@ -70,7 +70,7 @@ const { headings } = Astro.props;
                         headings.map((heading, idx) => (
                             <li>
                                 <a href={`#${heading.slug}`}>
-                                    {idx + 1 + '. ' + heading.text}
+                                    {idx + 1 + ". " + heading.text}
                                 </a>
                             </li>
                         ))
@@ -96,7 +96,7 @@ const { headings } = Astro.props;
                 <slot name="content" />
             </main>
             <div>
-                Read more at <a href="http://localhost:4321">ueuie.dev</a>
+                Read more <a href="http://localhost:4321">at.myquiet.place</a>
             </div>
         </div>
         <Button class="tts">
@@ -118,9 +118,9 @@ const { headings } = Astro.props;
 </Layout>
 
 <script>
-    import { animate } from '~/components/Logo.anim';
+    import { animate } from "~/components/Logo.anim";
 
-    animate.line(0, 'THE', 15);
-    animate.line(1, 'x', 25);
-    animate.line(2, '[B]LOG', 15);
+    animate.line(0, "THE", 15);
+    animate.line(1, "x", 25);
+    animate.line(2, "[B]LOG", 15);
 </script>

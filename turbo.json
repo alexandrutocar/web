@@ -1,6 +1,6 @@
 {
     "$schema": "https://turbo.build/schema.json",
-    "pipeline": {
+    "tasks": {
         "build": {
             "inputs": [
                 "src/**/*",
@@ -19,17 +19,17 @@
             "cache": false,
             "persistent": true
         },
-        "@ueuie.dev/collection#build": {
+        "@packages/collection#build": {
             "outputs": [
                 "build"
             ]
         },
-        "@ueuie.dev/movno#build": {
+        "@packages/movno#build": {
             "outputs": [
                 "build"
             ]
         },
-        "@ueuie.dev/path#build": {
+        "@packages/path#build": {
             "outputs": [
                 "build"
             ]

@@ -1,10 +1,10 @@
 <style lang="scss">
     .container {
-        font-variant: small-caps;
+        font-variant: normal;
         font-weight: 500;
 
         max-width: 100%;
-        width: 30rem;
+        width: 47rem;
 
         .greet {
             margin: 0;
@@ -15,9 +15,9 @@
     .about {
         position: relative;
         margin-top: 4rem;
-        font-size: 1.5rem;
+        font-size: 1.27rem;
 
-        text-align: justify;
+        text-align: left;
     }
 </style>
 
@@ -25,7 +25,7 @@
     <h1 class="greet">
         <slot name="title" />
     </h1>
-    <p class="about">
+    <div class="about">
         <slot name="about" />
-    </p>
+    </div>
 </div>

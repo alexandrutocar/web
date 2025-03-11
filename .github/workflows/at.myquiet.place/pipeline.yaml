@@ -1,0 +1,86 @@
+name: "🗐 at.myquiet.place: build static astro site and deploy to cloudflare pages ᓚᘏᗢ"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/at.myquiet.place/pipeline.yaml"
+      - "websites/at.myquiet.place/**"
+      - "pnpm-lock.yaml"
+      - "package.json"
+      - "turbo.json"
+      - "!.eslintignore"
+      - "!.eslintcache"
+      - "!.eslintrc.json"
+      - "!.prettierignore"
+      - "!.prettierrc.json"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: execution
+    permissions:
+      contents: read
+      deployments: write
+    name: ✨ build astro project
+    steps:
+      - name: ⬇️ checkout
+        uses: actions/checkout@v3
+
+      - name: ⎔ setup node
+        uses: actions/setup-node@v3
+
+      # ----
+      - name: ⎔ setup pnpm
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: 💫 include pnpm's cache
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: setup `pnpm` cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - uses: actions/cache@v3
+        name: setup `build` cache
+        with:
+          path: ./websites/at.myquiet.place/dist
+          key: ${{ runner.os }}-astro-build-${{ hashFiles('dist') }}
+          restore-keys: |
+            ${{ runner.os }}-astro-build-
+      # ----
+      - name: 📥 install dependencies
+        run: pnpm install
+
+      - name: 🖇 build application
+        run: pnpm turbo run build --filter @websites/at.myquiet.place
+
+      - name: ⛈️ publish on cloudflare pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ceea9c8b1ca43a60e40bbeaa6b96e594
+          projectName: at.myquiet.place
+          directory: dist
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: Switch what branch you are publishing to.
+          # By default this will be the branch which triggered this workflow
+          branch: main
+          # Optional: Change the working directory
+          workingDirectory: websites/at.myquiet.place
+          # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
+          wranglerVersion: "3"
