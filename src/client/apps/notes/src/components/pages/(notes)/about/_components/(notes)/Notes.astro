@@ -1,0 +1,67 @@
+---
+import Link from "~/components/custom/Link.astro";
+import Socials from "./_components/Socials.astro";
+import { getCollection } from "astro:content";
+import { decode } from "~/modules/content/notes";
+import { useTranslations } from "~/modules/i18n/translations/index";
+import { getLocale } from "~/modules/i18n/locale";
+
+const locale = getLocale(Astro.url);
+
+const notes = await getCollection("notes", (entry) => {
+    const id = decode(entry.id);
+    return id.locale == locale;
+});
+
+// Translations
+// ------------
+const t = useTranslations(locale);
+---
+
+<style lang="scss">
+    .container {
+        font-weight: 500;
+
+        max-width: 100%;
+        width: 47rem;
+
+        .title {
+            margin: 0;
+            font-size: 4.5rem;
+        }
+
+        .notes {
+            position: relative;
+            margin-top: 4rem;
+            font-size: 1.27rem;
+
+            text-align: left;
+        }
+    }
+</style>
+
+<div class="container">
+    <h1 class="title">Notes</h1>
+    <div class="notes">
+        {
+            notes.length > 0 ? (
+                <ul style="list-style:none;">
+                    {notes.map((note) => {
+                        const { locale, slug } = decode(note.id);
+
+                        return (
+                            <li style="margin:1rem 0;">
+                                <Link href={`/${locale}/${t("notes")}/${slug}`}>
+                                    {note.data.title}
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
+            ) : (
+                <p>{t("empty")}</p>
+            )
+        }
+    </div>
+    <Socials />
+</div>

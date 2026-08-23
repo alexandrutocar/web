@@ -1,0 +1,20 @@
+---
+import Link from "~/components/custom/Link.astro";
+import { getLocale } from "~/modules/i18n/locale";
+import { useTranslations } from "~/modules/i18n/translations";
+
+const t = useTranslations(getLocale(Astro.url));
+---
+
+<div style="display: flex;gap: 3.5rem;">
+    <Link href="mailto:alexandru.tocar@outlook.com" tooltip={t("links.email")}>
+        alexandru.tocar@outlook.com
+    </Link>
+    <Link
+        href="https://keys.openpgp.org/vks/v1/by-fingerprint/B617DD243AB02E3F2E67DBFD13052A85D7A42AA4"
+        tooltip={t("links.key")}
+    >
+        0xB617DD24
+    </Link>
+    <Link href="/atom.xml" tooltip={t("links.atom")}>atom.xml</Link>
+</div>

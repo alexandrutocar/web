@@ -1,0 +1,15 @@
+{
+    "tasks": {
+        "dev": "deno run -A npm:astro dev",
+        "build": "deno run -A npm:astro build",
+        "preview": "deno run --allow-net --allow-read --allow-env dist/server/entry.mjs"
+    },
+    "imports": {
+        "@astrojs/mdx": "npm:@astrojs/mdx@^7.0.5",
+        "@astrojs/solid": "npm:@astrojs/solid-js@^7.0.2",
+        "@astrojs/sitemap": "npm:@astrojs/sitemap@^3.7.3",
+        "astro": "npm:astro@^7.1.6",
+        "normalize.css": "npm:normalize.css@^8.0.1",
+        "sass": "npm:sass@^1.102.0"
+    }
+}

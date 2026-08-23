@@ -1,0 +1,67 @@
+---
+import Layout from "~/components/(layout)/Donuts.astro";
+
+import Button from "~/components/custom/Button.astro";
+import { useTranslations } from "~/modules/i18n/translations";
+import { getLocale } from "~/modules/i18n/locale";
+import Link from "~/components/custom/Link.astro";
+
+interface Props {
+    locale: string;
+    title: string;
+}
+
+const { locale, title } = Astro.props;
+
+// Internationalization
+// --------------------
+const t = useTranslations(getLocale(Astro.url));
+---
+
+<style lang="scss">
+    $padding: 12rem;
+
+    .container {
+        position: relative;
+        padding: $padding;
+
+        width: calc(100% - 2 * $padding);
+        height: calc(100% - 2 * $padding);
+
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+
+        z-index: 1;
+    }
+
+    @media screen and (max-aspect-ratio: 1) {
+        $padding-x: 4rem;
+        $padding-y: 8rem;
+
+        .container {
+            padding: $padding-y $padding-x;
+
+            flex-direction: column;
+            justify-content: space-around;
+
+            width: calc(100% - 2 * $padding-x);
+            height: calc(100% - 2 * $padding-y);
+
+            text-align: center;
+            align-items: center;
+        }
+    }
+</style>
+
+<Layout
+    console={[[`alex@lumine:~/ > `, 25]]}
+    locale={locale}
+    title={title}
+>
+    <div class="container">
+        <Link href="/de" style="font-size:5rem">Deutsch</Link>
+        <Link href="/en" style="font-size:5rem">English</Link>
+    </div>
+</Layout>

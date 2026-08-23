@@ -1,0 +1,47 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"div">;
+
+const { class: className, ...attrs } = Astro.props;
+---
+
+<style lang="scss">
+    .container {
+        position: fixed;
+        display: flex;
+
+        top: 2.5rem;
+        left: 2.5rem;
+
+        gap: 0.5rem;
+        flex-shrink: 0;
+        align-items: flex-start;
+
+        z-index: 10;
+
+        user-select: none;
+    }
+</style>
+
+<style lang="scss">
+    .lines {
+        align-self: stretch;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        // display: block;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+</style>
+
+<div class="container" {...attrs}>
+    <ul id="lines" class="lines">
+        <slot />
+    </ul>
+</div>

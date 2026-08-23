@@ -1,0 +1,56 @@
+---
+import FloatingDonuts from "~/components/FloatingDonuts.astro";
+
+import Layout from "~/components/LayoutBase.astro";
+
+type Props = { title: string };
+const { title } = Astro.props;
+---
+
+<style lang="scss">
+    $padding: 12rem;
+
+    .container {
+        position: relative;
+        padding: $padding;
+
+        width: calc(100% - 2 * $padding);
+        height: calc(100% - 2 * $padding);
+
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+        justify-content: space-between;
+
+        z-index: 1;
+    }
+
+    @media screen and (max-aspect-ratio: 1) {
+        $padding-x: 1rem;
+        $padding-y: 8rem;
+
+        .container {
+            padding: $padding-y $padding-x;
+
+            width: calc(100% - 2 * $padding-x);
+            height: calc(100% - 2 * $padding-y);
+
+            text-align: center;
+            align-items: center;
+        }
+    }
+</style>
+
+<Layout title={title}>
+    <slot slot="header" name="logo" />
+
+    <div class="container">
+        <h1>
+            <slot name="title" slot="title" />
+        </h1>
+
+        <slot name="songs" slot="songs" />
+    </div>
+
+    <FloatingDonuts />
+</Layout>

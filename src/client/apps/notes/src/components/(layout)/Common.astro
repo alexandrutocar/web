@@ -1,0 +1,57 @@
+---
+import "normalize.css/normalize.css";
+
+type Props = { title: string; lang: string };
+const { title, lang } = Astro.props;
+---
+
+<style>
+    @font-face {
+        font-family: Tamsyn;
+        src: url(/fonts/Tamzen8x16b.ttf);
+    }
+
+    * {
+        font-family: Tamsyn;
+    }
+</style>
+
+<style is:global lang="scss">
+    :root {
+        --background-color: lch(0% 0 0);
+        --text-color: lch(99.9% 0 0);
+
+        ::selection {
+            color: #000;
+            background: #fff;
+        }
+
+        ::-moz-selection {
+            color: #000;
+            background: #fff;
+        }
+    }
+
+    html {
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<html lang={lang}>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{title}</title>
+        <slot name="head" />
+    </head>
+    <body>
+        <slot />
+    </body>
+</html>
