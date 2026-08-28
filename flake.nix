@@ -1,42 +1,67 @@
 {
-  description = "my public web projects";
+  description = "ueuie.earth";
 
   inputs = {
+    nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixpkgs-unstable";
+
     devenv = {
-      url = "github:cachix/devenv/main";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:cachix/devenv";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { nixpkgs, self, ... }@inputs:
-    let
-      systems = [ "aarch64-linux" "x86_64-linux" "i686-linux" ];
-      forAllSystems = inputs.nixpkgs.lib.genAttrs systems;
+  outputs = {self, ...} @ inputs: let
+    forSystems = inputs.nixpkgs-unstable.lib.genAttrs [
+      "x86_64-linux"
+    ];
+
+    mkPackages = system: pkgs:
+      import pkgs {
+        inherit system;
+      };
+  in {
+    devShells = forSystems (system: let
+      pkgs = mkPackages system inputs.nixpkgs-unstable;
     in {
-      # formatter
-      formatter =
-        forAllSystems (system: inputs.nixpkgs.legacyPackages.${system}.nixfmt);
+      default = inputs.devenv.lib.mkShell {
+        inherit inputs pkgs;
+        modules = [
+          (_: {
+            languages = {
+              deno = {
+                enable = true;
+              };
 
-      packages = forAllSystems (system:
-        let pkgs = inputs.nixpkgs.legacyPackages.${system};
-        in {
-          # devenv
-          devenv-up = self.devShells.${system}.default.config.procfileScript;
-          devenv-test = self.devShells.${system}.default.config.test;
+              nix = {
+                enable = true;
+              };
 
-          # waylock-service
-          default = pkgs.callPackage ./nix/waylock-service.nix pkgs;
-        });
+              typescript = {
+                enable = true;
+              };
+            };
 
-      devShells = forAllSystems (system:
-        let pkgs = inputs.nixpkgs.legacyPackages.${system};
-        in {
-          default = inputs.devenv.lib.mkShell {
-            inherit inputs pkgs;
+            git-hooks.hooks = {
+              alejandra.enable = true;
 
-            modules = [ ./devenv.nix ];
-          };
-        });
-    };
+              denofmt.enable = true;
+
+              denolint.enable = true;
+            };
+
+            packages = with pkgs; [
+              alejandra
+            ];
+          })
+        ];
+      };
+    });
+
+    formatter = forSystems (
+      system: let
+        pkgs = mkPackages system inputs.nixpkgs-unstable;
+      in
+        pkgs.alejandra
+    );
+  };
 }
