@@ -12,7 +12,7 @@ interface Props {
 const { console, locale, title } = Astro.props;
 ---
 
-<Layout title={title} lang={locale}>
+<Layout title={title} locale={locale}>
     <header>
         <Console data-console={JSON.stringify(console)}>
             {console.map(([text]) => <Line>{text}</Line>)}
