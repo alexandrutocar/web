@@ -2,6 +2,7 @@ import { locales } from "../locale.ts";
 
 export const translations = {
     en: {
+        "about": "Notes on code, math and self.",
         "links.email": "email address",
         "links.key": "pgp key",
         "links.atom": "updates",
@@ -10,6 +11,7 @@ export const translations = {
         "title": "Alex's Notes",
     },
     de: {
+        "about": "Notizen zu Code, Mathe and Selbst.",
         "links.email": "E-Mail Adresse",
         "links.key": "PGP-Schlüssel",
         "links.atom": "Neuigkeiten",

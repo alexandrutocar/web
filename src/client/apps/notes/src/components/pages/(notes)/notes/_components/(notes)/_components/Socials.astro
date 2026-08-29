@@ -3,7 +3,9 @@ import Link from "~/components/custom/Link.astro";
 import { getLocale } from "~/modules/i18n/locale";
 import { useTranslations } from "~/modules/i18n/translations";
 
-const t = useTranslations(getLocale(Astro.url));
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const url = Astro.url;
 ---
 
 <div style="display: flex;gap: 3.5rem;">
@@ -16,5 +18,8 @@ const t = useTranslations(getLocale(Astro.url));
     >
         0xB617DD24
     </Link>
-    <Link href="/atom.xml" tooltip={t("links.atom")}>atom.xml</Link>
+    <Link
+        href={new URL(`/${locale}/${t("notes")}/atom.xml`, url)}
+        tooltip={t("links.atom")}>atom.xml</Link
+    >
 </div>

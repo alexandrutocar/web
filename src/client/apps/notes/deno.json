@@ -9,6 +9,7 @@
         "@astrojs/solid": "npm:@astrojs/solid-js@^7.0.2",
         "@astrojs/sitemap": "npm:@astrojs/sitemap@^3.7.3",
         "astro": "npm:astro@^7.1.6",
+        "feed": "npm:feed@^6.0.0",
         "normalize.css": "npm:normalize.css@^8.0.1",
         "sass": "npm:sass@^1.102.0"
     }
