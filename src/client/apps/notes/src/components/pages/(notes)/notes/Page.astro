@@ -2,13 +2,12 @@
 import Layout from "~/components/(layout)/Donuts.astro";
 
 import Notes from "./_components/(notes)/Notes.astro";
+import { getLocale } from "~/modules/i18n/locale";
+import { useTranslations } from "~/modules/i18n/translations";
+import Feeds from "~/components/custom/Feeds.astro";
 
-interface Props {
-    locale: string;
-    title: string;
-}
-
-const { locale, title } = Astro.props;
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
 ---
 
 <style lang="scss">
@@ -46,11 +45,12 @@ const { locale, title } = Astro.props;
 </style>
 
 <Layout
-    console={[[`alex@lumine:~/${locale}/ > `, 25]]}
+    console={[[`alex@lumine:~/${locale}/${t("notes")}/ > `, 25]]}
     locale={locale}
-    title={title}
+    title={t("title")}
 >
     <div class="container">
-        <Notes/>
+        <Notes />
     </div>
+    <Feeds slot="head"/>
 </Layout>

@@ -55,13 +55,9 @@ const t = useTranslations(getLocale(Astro.url));
     }
 </style>
 
-<Layout
-    console={[[`alex@lumine:~/ > `, 25]]}
-    locale={locale}
-    title={title}
->
+<Layout console={[[`alex@lumine:~/ > `, 25]]} locale={locale} title={title}>
     <div class="container">
-        <Link href="/de" style="font-size:5rem">Deutsch</Link>
-        <Link href="/en" style="font-size:5rem">English</Link>
+        <Link href="/de/notizen" style="font-size:5rem">Deutsch</Link>
+        <Link href="/en/notes" style="font-size:5rem">English</Link>
     </div>
 </Layout>

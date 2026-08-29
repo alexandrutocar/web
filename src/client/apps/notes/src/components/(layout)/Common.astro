@@ -1,18 +1,18 @@
 ---
 import "normalize.css/normalize.css";
 
-type Props = { title: string; lang: string };
-const { title, lang } = Astro.props;
+type Props = { locale: string; title: string };
+const { locale, title } = Astro.props;
 ---
 
 <style>
     @font-face {
-        font-family: Tamsyn;
-        src: url(/fonts/Tamzen8x16b.ttf);
+        font-family: Tamzen;
+        src: url(/fonts/Tamzen/8x16b.ttf);
     }
 
     * {
-        font-family: Tamsyn;
+        font-family: Tamzen;
     }
 </style>
 
@@ -44,7 +44,7 @@ const { title, lang } = Astro.props;
     }
 </style>
 
-<html lang={lang}>
+<html lang={locale}>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

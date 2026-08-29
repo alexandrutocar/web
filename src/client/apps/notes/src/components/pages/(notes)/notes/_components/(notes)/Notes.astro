@@ -41,7 +41,7 @@ const t = useTranslations(locale);
 </style>
 
 <div class="container">
-    <h1 class="title">Notes</h1>
+    <h1 class="title">{t("notes").charAt(0).toUpperCase() + t("notes").slice(1)}</h1>
     <div class="notes">
         {
             notes.length > 0 ? (
