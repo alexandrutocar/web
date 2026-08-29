@@ -2,16 +2,10 @@
 import Layout from "~/components/(layout)/Donuts.astro";
 
 import Notes from "./_components/(notes)/Notes.astro";
-import type { Locale } from "~/modules/i18n/locale";
+import { getLocale } from "~/modules/i18n/locale";
 import { useTranslations } from "~/modules/i18n/translations";
 
-interface Props {
-    locale: Locale;
-    title: string;
-}
-
-const { locale, title } = Astro.props;
-
+const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 ---
 
@@ -52,9 +46,9 @@ const t = useTranslations(locale);
 <Layout
     console={[[`alex@lumine:~/${locale}/${t("notes")}/ > `, 25]]}
     locale={locale}
-    title={title}
+    title={t("title")}
 >
     <div class="container">
-        <Notes/>
+        <Notes />
     </div>
 </Layout>

@@ -7,6 +7,7 @@ export const translations = {
         "links.atom": "updates",
         "notes": "notes",
         "empty": "The first entry will be published on September 5.",
+        "title": "Alex's Notes",
     },
     de: {
         "links.email": "E-Mail Adresse",
@@ -14,6 +15,7 @@ export const translations = {
         "links.atom": "Neuigkeiten",
         "notes": "notizen",
         "empty": "Der erste Beitrag wird am 5. September veröffentlicht.",
+        "title": "Alex' Notizen",
     },
 } as const;
 
