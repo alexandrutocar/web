@@ -1,4 +1,4 @@
-import { defaultLocale } from "../locale.ts";
+import { defaultLocale, type Locale } from "../locale.ts";
 
 export const translations = {
     en: {
@@ -22,10 +22,17 @@ export const translations = {
 } as const;
 
 export function useTranslations(locale: keyof typeof translations) {
-    const localized: Record<string, string> = translations[locale];
-    return function t(
+    const cached: Record<string, string> = translations[locale];
+
+    return function (
         key: keyof (typeof translations)[(typeof defaultLocale)],
+        locale?: Locale,
     ) {
+        let localized = cached;
+        if (typeof locale !== "undefined") {
+            localized = translations[locale];
+        }
+
         return key in localized
             ? localized[key]
             : translations[defaultLocale][key];
