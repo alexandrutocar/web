@@ -1,4 +1,4 @@
-import { locales } from "../locale.ts";
+import { defaultLocale } from "../locale.ts";
 
 export const translations = {
     en: {
@@ -24,10 +24,10 @@ export const translations = {
 export function useTranslations(locale: keyof typeof translations) {
     const localized: Record<string, string> = translations[locale];
     return function t(
-        key: keyof (typeof translations)[(typeof locales)["default"]],
+        key: keyof (typeof translations)[(typeof defaultLocale)],
     ) {
         return key in localized
             ? localized[key]
-            : translations[locales.default][key];
+            : translations[defaultLocale][key];
     };
 }
