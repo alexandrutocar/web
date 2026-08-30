@@ -9,6 +9,7 @@
         "astro": "npm:astro@^7.1.6",
         "feed": "npm:feed@^6.0.0",
         "normalize.css": "npm:normalize.css@^8.0.1",
-        "sass": "npm:sass@^1.102.0"
+        "sass": "npm:sass@^1.102.0",
+        "sitemap": "npm:sitemap@^9.0.1"
     }
 }
