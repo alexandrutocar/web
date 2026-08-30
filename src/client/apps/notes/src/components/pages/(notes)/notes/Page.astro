@@ -4,7 +4,7 @@ import Layout from "~/components/(layout)/Donuts.astro";
 import Notes from "./_components/(notes)/Notes.astro";
 import { getLocale } from "~/modules/i18n/locale";
 import { useTranslations } from "~/modules/i18n/translations";
-import Head from "~/components/(common)/Head.astro";
+import Head from "./_components/(head)/Head.astro";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);

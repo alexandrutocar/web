@@ -9,6 +9,7 @@ export const translations = {
         "notes": "notes",
         "empty": "The first entry will be published on September 5.",
         "title": "Alex's Notes",
+        "title.format.md": "Markdown Format",
     },
     de: {
         "about": "Notizen zu Code, Mathe and Selbst.",
@@ -18,6 +19,7 @@ export const translations = {
         "notes": "notizen",
         "empty": "Der erste Beitrag wird am 5. September veröffentlicht.",
         "title": "Alex' Notizen",
+        "title.format.md": "Markdown Schreib-Format",
     },
 } as const;
 
