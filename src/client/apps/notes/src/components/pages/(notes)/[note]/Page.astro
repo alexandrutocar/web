@@ -8,7 +8,7 @@ import type { DataEntryMap } from "astro:content";
 import Drop from "./_components/Drop.astro";
 import { useTranslations } from "~/modules/i18n/translations/index.ts";
 import { getLocale } from "~/modules/i18n/locale.ts";
-import Feeds from "~/components/custom/Feeds.astro";
+import Head from "~/components/(common)/Head.astro";
 
 type Entry = DataEntryMap["notes"][string];
 
@@ -165,5 +165,5 @@ const t = useTranslations(getLocale(Astro.url));
             </svg>
         </Button>
     </div>
-    <Feeds slot="head"/>
+    <Head slot="head"/>
 </Layout>
