@@ -1,4 +1,4 @@
-import { CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
 import { type Locale, locales } from "../i18n/locale.ts";
 import { useTranslations } from "../i18n/translations/index.ts";
 

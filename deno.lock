@@ -1,13 +1,14 @@
 {
   "version": "5",
   "specifiers": {
-    "npm:@astrojs/mdx@^7.0.5": "7.0.5_astro@7.2.0__@astrojs+markdown-remark@7.2.2__@emnapi+core@1.11.1__@emnapi+runtime@1.11.1__sass@1.102.0_@emnapi+core@1.11.1_@emnapi+runtime@1.11.1_sass@1.102.0",
-    "npm:astro@*": "7.2.0_@astrojs+markdown-remark@7.2.2_@emnapi+core@1.11.1_@emnapi+runtime@1.11.1_sass@1.102.0",
-    "npm:astro@^7.1.6": "7.2.0_@astrojs+markdown-remark@7.2.2_@emnapi+core@1.11.1_@emnapi+runtime@1.11.1_sass@1.102.0",
+    "npm:@astrojs/mdx@^7.0.5": "7.0.5_astro@7.2.0__@astrojs+markdown-remark@7.2.2__yaml@2.9.0_yaml@2.9.0",
+    "npm:astro@*": "7.2.0_@astrojs+markdown-remark@7.2.2_yaml@2.9.0",
+    "npm:astro@^7.1.6": "7.2.0_@astrojs+markdown-remark@7.2.2_yaml@2.9.0",
     "npm:feed@6": "6.0.0",
     "npm:normalize.css@^8.0.1": "8.0.1",
     "npm:sass@^1.102.0": "1.102.0",
-    "npm:sitemap@^9.0.1": "9.0.1"
+    "npm:sitemap@^9.0.1": "9.0.1",
+    "npm:yaml@^2.9.0": "2.9.0"
   },
   "npm": {
     "@astrojs/compiler-binding-darwin-arm64@0.3.2": {
@@ -122,7 +123,7 @@
         "satteri"
       ]
     },
-    "@astrojs/mdx@7.0.5_astro@7.2.0__@astrojs+markdown-remark@7.2.2__@emnapi+core@1.11.1__@emnapi+runtime@1.11.1__sass@1.102.0_@emnapi+core@1.11.1_@emnapi+runtime@1.11.1_sass@1.102.0": {
+    "@astrojs/mdx@7.0.5_astro@7.2.0__@astrojs+markdown-remark@7.2.2__yaml@2.9.0_yaml@2.9.0": {
       "integrity": "sha512-wEM/HH1RiEntyPVagdiF+yArzfcYLKBB0C1RZspVidKZ97rRMbaqP1Nbl/GR0sJs8zwaceqxRymw8aOKKJRdYw==",
       "dependencies": [
         "@astrojs/internal-helpers",
@@ -930,7 +931,7 @@
       "integrity": "sha512-LElXdjswlqjWrPpJFg1Fx4wpkOCxj1TDHlSV4PlaRxHGWko024xICaa97ZkMfs6DRKlCguiAI+rbXv5GWwXIkg==",
       "bin": true
     },
-    "astro@7.2.0_@astrojs+markdown-remark@7.2.2_@emnapi+core@1.11.1_@emnapi+runtime@1.11.1_sass@1.102.0": {
+    "astro@7.2.0_@astrojs+markdown-remark@7.2.2_yaml@2.9.0": {
       "integrity": "sha512-lLTYzx3fOvCmtwD3JVBLQcbORbIOW1/j0R+3IvJx/XKwMGrk7mFnF0BYSOeRiNw1qHUR5mdA6+hRnyvyDfqrWQ==",
       "dependencies": [
         "@astrojs/compiler-rs",
@@ -2804,7 +2805,7 @@
         "vfile-message"
       ]
     },
-    "vite@8.2.1_esbuild@0.28.1_sass@1.102.0": {
+    "vite@8.2.1_esbuild@0.28.1_sass@1.102.0_yaml@2.9.0": {
       "integrity": "sha512-EU/eS7BH3XROHh2YnBefjM6DBKA6ZeMZEYQbj7NLWg5wHYlhB8B/Mayd5XsgWq+NFYccDOTemRpdETWR6Ka/lw==",
       "dependencies": [
         "esbuild",
@@ -2813,18 +2814,20 @@
         "postcss",
         "rolldown",
         "sass",
-        "tinyglobby"
+        "tinyglobby",
+        "yaml"
       ],
       "optionalDependencies": [
         "fsevents"
       ],
       "optionalPeers": [
         "esbuild",
-        "sass"
+        "sass",
+        "yaml"
       ],
       "bin": true
     },
-    "vitefu@1.1.3_vite@8.2.1__esbuild@0.28.1__sass@1.102.0_esbuild@0.28.1_sass@1.102.0": {
+    "vitefu@1.1.3_vite@8.2.1__esbuild@0.28.1__sass@1.102.0__yaml@2.9.0_yaml@2.9.0": {
       "integrity": "sha512-ub4okH7Z5KLjb6hDyjqrGXqWtWvoYdU3IGm/NorpgHncKoLTCfRIbvlhBm7r0YstIaQRYlp4yEbFqDcKSzXSSg==",
       "dependencies": [
         "vite"
@@ -2845,6 +2848,10 @@
     },
     "xxhash-wasm@1.1.0": {
       "integrity": "sha512-147y/6YNh+tlp6nd/2pWq38i9h6mz/EuQ6njIrmW8D1BS5nCqs0P6DG+m6zTGnNz5I+uhZ0SHxBs9BsPrwcKDA=="
+    },
+    "yaml@2.9.0": {
+      "integrity": "sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==",
+      "bin": true
     },
     "yargs-parser@22.0.0": {
       "integrity": "sha512-rwu/ClNdSMpkSrUb+d6BRsSkLUq1fmfsY6TOpYzTwvwkg1/NRG85KBy3kq++A8LKQwX6lsu+aWad+2khvuXrqw=="
@@ -2868,7 +2875,8 @@
           "npm:feed@6",
           "npm:normalize.css@^8.0.1",
           "npm:sass@^1.102.0",
-          "npm:sitemap@^9.0.1"
+          "npm:sitemap@^9.0.1",
+          "npm:yaml@^2.9.0"
         ]
       }
     }
