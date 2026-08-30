@@ -25,6 +25,10 @@ export type NoteEntryWithImplicitMetadata = CollectionEntry<"notes"> & {
     implicitMetadata: ImplicitMetadata;
 };
 
+export type NoteEntryWithLocaleAndSlug = CollectionEntry<"notes"> & {
+    implicitMetadata: Pick<ImplicitMetadata, "locale" | "slug">;
+};
+
 export type NoteEntryWithSlug = CollectionEntry<"notes"> & {
     implicitMetadata: Pick<ImplicitMetadata, "slug">;
 };
@@ -91,7 +95,7 @@ export function getNotePath(locale: Locale, slug: string): string {
 // ----------
 export async function getAlternates(
     count: number,
-): Promise<NoteEntryWithSlug[]> {
+): Promise<NoteEntryWithLocaleAndSlug[]> {
     const { by } = await getNotesIndex();
 
     const alternates = by.count.get(count);
