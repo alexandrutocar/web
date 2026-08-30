@@ -4,7 +4,7 @@ import Layout from "~/components/(layout)/Donuts.astro";
 import Notes from "./_components/(notes)/Notes.astro";
 import { getLocale } from "~/modules/i18n/locale";
 import { useTranslations } from "~/modules/i18n/translations";
-import Feeds from "~/components/custom/Feeds.astro";
+import Head from "./_components/(head)/Head.astro";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -52,5 +52,5 @@ const t = useTranslations(locale);
     <div class="container">
         <Notes />
     </div>
-    <Feeds slot="head"/>
+    <Head slot="head"/>
 </Layout>

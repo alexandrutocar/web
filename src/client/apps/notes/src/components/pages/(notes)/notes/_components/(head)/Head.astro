@@ -1,0 +1,11 @@
+---
+import Head from "~/components/(common)/Head.astro";
+import { getLocale } from "~/modules/i18n/locale";
+import { useTranslations } from "~/modules/i18n/translations";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+---
+
+<link rel="canonical" href={`/${locale}/${t("notes")}`} />
+<Head slot="head" />

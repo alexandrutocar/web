@@ -1,4 +1,4 @@
-import { locales } from "../locale.ts";
+import { defaultLocale, type Locale } from "../locale.ts";
 
 export const translations = {
     en: {
@@ -9,6 +9,7 @@ export const translations = {
         "notes": "notes",
         "empty": "The first entry will be published on September 5.",
         "title": "Alex's Notes",
+        "title.format.md": "Markdown Format",
     },
     de: {
         "about": "Notizen zu Code, Mathe and Selbst.",
@@ -18,16 +19,24 @@ export const translations = {
         "notes": "notizen",
         "empty": "Der erste Beitrag wird am 5. September veröffentlicht.",
         "title": "Alex' Notizen",
+        "title.format.md": "Markdown Schreib-Format",
     },
 } as const;
 
 export function useTranslations(locale: keyof typeof translations) {
-    const localized: Record<string, string> = translations[locale];
-    return function t(
-        key: keyof (typeof translations)[(typeof locales)["default"]],
+    const cached: Record<string, string> = translations[locale];
+
+    return function (
+        key: keyof (typeof translations)[(typeof defaultLocale)],
+        locale?: Locale,
     ) {
+        let localized = cached;
+        if (typeof locale !== "undefined") {
+            localized = translations[locale];
+        }
+
         return key in localized
             ? localized[key]
-            : translations[locales.default][key];
+            : translations[defaultLocale][key];
     };
 }

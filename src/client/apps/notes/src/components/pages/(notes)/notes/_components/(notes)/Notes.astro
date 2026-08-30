@@ -1,17 +1,15 @@
 ---
 import Link from "~/components/custom/Link.astro";
 import Socials from "./_components/Socials.astro";
-import { getCollection } from "astro:content";
-import { decode } from "~/modules/content/notes";
+import { getNotePath, getNotesIndex } from "~/modules/content/notes";
 import { useTranslations } from "~/modules/i18n/translations/index";
 import { getLocale } from "~/modules/i18n/locale";
 
 const locale = getLocale(Astro.url);
 
-const notes = await getCollection("notes", (entry) => {
-    const id = decode(entry.id);
-    return id.locale == locale;
-});
+const notes = await getNotesIndex().then(
+    ({ by }) => by.locale.get(locale) ?? [],
+);
 
 // Translations
 // ------------
@@ -41,22 +39,27 @@ const t = useTranslations(locale);
 </style>
 
 <div class="container">
-    <h1 class="title">{t("notes").charAt(0).toUpperCase() + t("notes").slice(1)}</h1>
+    <h1 class="title">
+        {t("notes").charAt(0).toUpperCase() + t("notes").slice(1)}
+    </h1>
     <div class="notes">
         {
             notes.length > 0 ? (
                 <ul style="list-style:none;">
-                    {notes.map((note) => {
-                        const { locale, slug } = decode(note.id);
-
-                        return (
-                            <li style="margin:1rem 0;">
-                                <Link href={`/${locale}/${t("notes")}/${slug}`}>
-                                    {note.data.title}
-                                </Link>
-                            </li>
-                        );
-                    })}
+                    {notes.map(
+                        ({
+                            data: { title },
+                            implicitMetadata: { locale, slug },
+                        }) => {
+                            return (
+                                <li style="margin:1rem 0;">
+                                    <Link href={getNotePath(locale, slug)}>
+                                        {title}
+                                    </Link>
+                                </li>
+                            );
+                        },
+                    )}
                 </ul>
             ) : (
                 <p>{t("empty")}</p>

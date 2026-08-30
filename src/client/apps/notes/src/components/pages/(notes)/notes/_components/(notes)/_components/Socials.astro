@@ -8,11 +8,16 @@ const t = useTranslations(locale);
 const url = Astro.url;
 ---
 
-<div style="display: flex;gap: 3.5rem;">
-    <Link href="mailto:alexandru.tocar@outlook.com" tooltip={t("links.email")}>
+<div style="display: flex;gap: 3.5rem;margin-bottom:1rem">
+    <Link
+        rel="author"
+        href="mailto:alexandru.tocar@outlook.com"
+        tooltip={t("links.email")}
+    >
         alexandru.tocar@outlook.com
     </Link>
     <Link
+        rel="noopener noreferrer"
         href="https://keys.openpgp.org/vks/v1/by-fingerprint/B617DD243AB02E3F2E67DBFD13052A85D7A42AA4"
         tooltip={t("links.key")}
     >
@@ -22,4 +27,20 @@ const url = Astro.url;
         href={new URL(`/${locale}/${t("notes")}/atom.xml`, url)}
         tooltip={t("links.atom")}>atom.xml</Link
     >
+</div>
+<div style="display: flex;gap: 3.5rem;">
+    <Link
+        rel="noopener noreferrer me"
+        href="https://codeberg.org/alexandrutocar"
+        tooltip="Codeberg"
+    >
+        Codeberg
+    </Link>
+    <Link
+        rel="noopener noreferrer me"
+        href="https://github.com/alexandrutocar"
+        tooltip="GitHub"
+    >
+        GitHub
+    </Link>
 </div>

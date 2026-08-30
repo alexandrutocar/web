@@ -2,40 +2,35 @@
 import Layout from "~/components/(layout)/Read.astro";
 import Button from "~/components/custom/Button.astro";
 import Tools from "./_components/Tools.astro";
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 import type { Locale } from "~/modules/i18n/locale";
-import type { DataEntryMap } from "astro:content";
 import Drop from "./_components/Drop.astro";
 import { useTranslations } from "~/modules/i18n/translations/index.ts";
 import { getLocale } from "~/modules/i18n/locale.ts";
-import Feeds from "~/components/custom/Feeds.astro";
-
-type Entry = DataEntryMap["notes"][string];
+import {
+    getNotesIndex,
+    type NoteEntryWithImplicitMetadata,
+} from "~/modules/content/notes";
+import Head from "./_components/(head)/Head.astro";
 
 export function getGetStaticPaths(locale: Locale) {
     return async function getStaticPaths() {
-        const entries = await getCollection(
-            "notes",
-            ({ id }) => id.split("/")[0] === locale,
+        const entries = await getNotesIndex().then(
+            ({ by }) => by.locale.get(locale) ?? [],
         );
 
         return entries.map((entry) => {
             return {
-                params: {
-                    slug: entry.id.split("/")[1].split("-").slice(1).join("-"),
-                },
-                props: {
-                    entry,
-                    locale,
-                },
+                params: { slug: entry.implicitMetadata.slug },
+                props: { entry },
             };
         });
     };
 }
 
-export type Props = { entry: Entry; locale: Locale };
+export type Props = { entry: NoteEntryWithImplicitMetadata };
 
-const { entry, locale } = Astro.props;
+const { entry } = Astro.props;
 
 const { slug } = Astro.params;
 
@@ -43,7 +38,8 @@ const { Content, headings } = await render(entry);
 
 // Translations
 // ------------
-const t = useTranslations(getLocale(Astro.url));
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
 ---
 
 <style lang="scss">
@@ -165,5 +161,5 @@ const t = useTranslations(getLocale(Astro.url));
             </svg>
         </Button>
     </div>
-    <Feeds slot="head"/>
+    <Head slot="head" entry={entry} />
 </Layout>
