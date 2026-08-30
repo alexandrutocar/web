@@ -6,8 +6,8 @@ import { experimental_AstroContainer as AstroContainer } from "astro/container";
 
 import { Feed } from "feed";
 
-import { useTranslations } from "../i18n/translations/index.ts";
-import { getLocale } from "../i18n/locale.ts";
+import { useTranslations } from "~/modules/i18n/translations/index.ts";
+import { getLocale } from "~/modules/i18n/locale.ts";
 import { getNotePath, getNotesIndex } from "./notes.ts";
 
 export const getFeed = async function (

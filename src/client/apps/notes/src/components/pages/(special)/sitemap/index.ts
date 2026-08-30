@@ -6,13 +6,13 @@ import {
 } from "sitemap";
 import type { APIRoute } from "astro";
 import { Readable } from "node:stream";
-import { type Locale, locales } from "../../../../modules/i18n/locale.ts";
+import { type Locale, locales } from "~/modules/i18n/locale.ts";
 import {
     getAlternates,
     getNotePath,
     getNotesIndex,
-} from "../../../../modules/content/notes.ts";
-import { useTranslations } from "../../../../modules/i18n/translations/index.ts";
+} from "~/modules/content/notes.ts";
+import { useTranslations } from "~/modules/i18n/translations/index.ts";
 
 export function toHreflangLinks(
     pairs: { locale: Locale; url: string }[],

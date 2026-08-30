@@ -1,9 +1,9 @@
 import type { APIRoute, GetStaticPaths } from "astro";
-import type { Locale } from "../../../../../modules/i18n/locale.ts";
+import type { Locale } from "~/modules/i18n/locale.ts";
 import {
     getNotesIndex,
     type NoteEntryWithImplicitMetadata,
-} from "../../../../../modules/content/notes.ts";
+} from "~/modules/content/notes.ts";
 import { stringify } from "yaml";
 
 export function getGetStaticPaths(locale: Locale): GetStaticPaths {
