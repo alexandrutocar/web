@@ -1,4 +1,4 @@
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 import { loadRenderers } from "astro:container";
 
 import { getContainerRenderer as getMDXRenderer } from "@astrojs/mdx/container-renderer";
@@ -8,7 +8,7 @@ import { Feed } from "feed";
 
 import { useTranslations } from "../i18n/translations/index.ts";
 import { getLocale } from "../i18n/locale.ts";
-import { decode } from "./notes.ts";
+import { getNotePath, getNotesIndex } from "./notes.ts";
 
 export const getFeed = async function (
     { url }: { url: URL },
@@ -16,14 +16,12 @@ export const getFeed = async function (
     const locale = getLocale(url);
     const t = useTranslations(locale);
 
-    const entries = await getCollection("notes", (entry) => {
-        const id = decode(entry.id);
-        return id.locale === locale;
-    });
+    const entries = await getNotesIndex().then(({ by }) =>
+        by.locale.get(locale) ?? []
+    );
 
     const updated = entries.reduce(
-        (latest, entry) =>
-            entry.data.updated > latest ? entry.data.updated : latest,
+        (latest, { data: { updated } }) => updated > latest ? updated : latest,
         entries[0]?.data.updated ?? new Date(),
     );
 
@@ -48,12 +46,9 @@ export const getFeed = async function (
     const container = await AstroContainer.create({ renderers });
 
     for (const entry of entries) {
-        // Metadata
-        const { slug } = decode(entry.id);
-
         const link = new URL(
-            `/${locale}/${t("notes")}/${slug}/`,
-            url.origin,
+            getNotePath(locale, entry.implicitMetadata.slug),
+            url,
         ).toString();
 
         // Content
