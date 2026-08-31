@@ -32,6 +32,7 @@ export const getFeed = async function (
         title: t("title"),
         link: url.toString(),
         id: new URL("/", url).toString(),
+        image: new URL("/img/icons/atom/logo.svg", url).toString(),
         author: {
             name: "Alexandru Tocar",
             email: "alexandru.tocar@outlook.com",
