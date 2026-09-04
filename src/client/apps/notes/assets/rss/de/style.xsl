@@ -183,8 +183,11 @@
             <xsl:value-of select="atom:subtitle"/>
           </div>
 
-          <a class="link" target="_blank" href="https://ueuie.earth">
-            &#x2190; Gehe zu ueuie.earth
+          <a class="link">
+            <xsl:attribute name="href">
+              <xsl:value-of select="atom:link[@rel='alternate']/@href"/>
+            </xsl:attribute>
+            &#x2190; Gehe zu <xsl:value-of select="atom:link[@rel='alternate']/@href"/>
           </a>
 
           <h2>Letzte Beiträge</h2>
@@ -195,7 +198,7 @@
                 <h3 class="entry-title">
                   <a target="_blank">
                     <xsl:attribute name="href">
-                      <xsl:value-of select="atom:link"/>
+                      <xsl:value-of select="atom:link/@href"/>
                     </xsl:attribute>
                     <xsl:value-of select="atom:title"/>
                   </a>
