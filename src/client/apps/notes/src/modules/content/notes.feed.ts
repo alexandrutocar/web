@@ -30,7 +30,7 @@ export const getFeed = async function (
         stylesheet: new URL(`/rss/${locale}/style.xsl`, url).toString(),
         updated,
         title: t("title"),
-        link: url.toString(),
+        link: new URL(`/${locale}/${t("notes")}`, url).toString(),
         id: new URL("/", url).toString(),
         image: new URL("/img/icons/atom/logo.svg", url).toString(),
         author: {
