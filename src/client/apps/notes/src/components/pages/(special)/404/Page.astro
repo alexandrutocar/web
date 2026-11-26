@@ -2,8 +2,8 @@
 import Layout from "~/components/(layout)/Donuts.astro";
 
 interface Props {
-    locale: string;
-    title: string;
+	locale: string;
+	title: string;
 }
 
 const { locale, title } = Astro.props;
@@ -44,13 +44,13 @@ const { locale, title } = Astro.props;
 </style>
 
 <Layout
-    console={[["alex@albedo:/dev/null >", 25]]}
-    locale={locale}
-    title={title}
+	console={[["alex@albedo:/dev/null >", 25]]}
+	locale={locale}
+	title={title}
 >
-    <div class="container">
-        <h1 style="font-weight: bold;font-size: 8rem;">
-            This page could not be found.
-        </h1>
-    </div>
+	<div class="container">
+		<h1 style="font-weight: bold;font-size: 8rem;">
+			This page could not be found.
+		</h1>
+	</div>
 </Layout>

@@ -8,24 +8,24 @@ import Drop from "./_components/Drop.astro";
 import { useTranslations } from "~/modules/i18n/translations/index.ts";
 import { getLocale } from "~/modules/i18n/locale.ts";
 import {
-    getNotesIndex,
-    type NoteEntryWithImplicitMetadata,
+	getNotesIndex,
+	type NoteEntryWithImplicitMetadata,
 } from "~/modules/content/notes";
 import Head from "./_components/(head)/Head.astro";
 
 export function getGetStaticPaths(locale: Locale) {
-    return async function getStaticPaths() {
-        const entries = await getNotesIndex().then(
-            ({ by }) => by.locale.get(locale) ?? [],
-        );
+	return async function getStaticPaths() {
+		const entries = await getNotesIndex().then(
+			({ by }) => by.locale.get(locale) ?? [],
+		);
 
-        return entries.map((entry) => {
-            return {
-                params: { slug: entry.implicitMetadata.slug },
-                props: { entry },
-            };
-        });
-    };
+		return entries.map((entry) => {
+			return {
+				params: { slug: entry.implicitMetadata.slug },
+				props: { entry },
+			};
+		});
+	};
 }
 
 export type Props = { entry: NoteEntryWithImplicitMetadata };
@@ -89,77 +89,72 @@ const t = useTranslations(locale);
 </style>
 
 <style>
-    .tts {
-        position: relative;
-        right: -2rem;
-        top: 0;
-    }
+.tts {
+	position: relative;
+	right: -2rem;
+	top: 0;
+}
 </style>
 
 <Layout
-    console={[
-        [`alex@lumine:~/${locale}/${t("notes")} >`, 15],
-        [`cat ${slug.slice(0, 12 + t("notes").length)}...`, 25],
-        [`...${slug.slice(-(13 + t("notes").length))}.md`, 50],
-    ]}
-    locale={locale}
-    title={entry.data.title}
+	console={[
+		[`alex@lumine:~/${locale}/${t("notes")} >`, 15],
+		[`cat ${slug.slice(0, 12 + t("notes").length)}...`, 25],
+		[`...${slug.slice(-(13 + t("notes").length))}.md`, 50],
+	]}
+	locale={locale}
+	title={entry.data.title}
 >
-    <Drop />
-    <div class="container">
-        <div class="sidebar">
-            <div class="table-of-contents">
-                <ul>
-                    {
-                        headings.map((heading, idx) => (
-                            <li>
-                                <a href={`#${heading.slug}`}>
-                                    {idx + 1 + ". " + heading.text}
-                                </a>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </div>
-            <Tools />
-        </div>
-        <div class="content">
-            <header>
-                <h1 class="title">
-                    {entry.data.title}
-                </h1>
-                <div>
-                    <p class="labels">
-                        {entry.data.labels.map((label) => <span>{label}</span>)}
-                    </p>
-                    <p class="datetime">
-                        <span>31.01.2024</span>
-                        <span>23:45</span>
-                    </p>
-                </div>
-            </header>
-            <main>
-                <Content />
-            </main>
-            <div>
-                Find more notes <a href={`/${locale}`}>here</a>.
-            </div>
-        </div>
-        <Button class="tts">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-            >
-                <path
-                    d="M12 4V20M8 9V15M20 10V14M4 10V14M16 7V17"
-                    stroke="white"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-            </svg>
-        </Button>
-    </div>
-    <Head slot="head" entry={entry} />
+	<Drop />
+	<div class="container">
+		<div class="sidebar">
+			<div class="table-of-contents">
+				<ul>
+					{headings.map((heading, idx) => (
+						<li>
+							<a href={`#${heading.slug}`}>{idx + 1 + ". " + heading.text}</a>
+						</li>
+					))}
+				</ul>
+			</div>
+			<Tools />
+		</div>
+		<div class="content">
+			<header>
+				<h1 class="title">
+					{entry.data.title}
+				</h1>
+				<div>
+					<p class="labels">
+						{entry.data.labels.map((label) => <span>{label}</span>)}
+					</p>
+					<p class="datetime">
+						<span>31.01.2024</span>
+						<span>23:45</span>
+					</p>
+				</div>
+			</header>
+			<main>
+				<Content />
+			</main>
+			<div>Find more notes <a href={`/${locale}`}>here</a>.</div>
+		</div>
+		<Button class="tts">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+			>
+				<path
+					d="M12 4V20M8 9V15M20 10V14M4 10V14M16 7V17"
+					stroke="white"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				></path>
+			</svg>
+		</Button>
+	</div>
+	<Head slot="head" entry={entry} />
 </Layout>

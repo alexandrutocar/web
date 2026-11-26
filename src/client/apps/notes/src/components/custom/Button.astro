@@ -1,39 +1,39 @@
 ---
-import type { HTMLAttributes } from 'astro/types';
+import type { HTMLAttributes } from "astro/types";
 
-type Props = HTMLAttributes<'button'> & {
-    tooltip?: string;
-    size?: 'sm' | 'md' | 'lg';
+type Props = HTMLAttributes<"button"> & {
+	tooltip?: string;
+	size?: "sm" | "md" | "lg";
 };
-const { tooltip, size = 'lg', ...props } = Astro.props;
+const { tooltip, size = "lg", ...props } = Astro.props;
 
 export type ButtonProps = Props;
 ---
 
 <style
-    define:vars={{
-        size: size === 'sm' ? '1rem' : size === 'md' ? '1.25rem' : '1.5rem',
-    }}
+	define:vars={{
+		size: size === "sm" ? "1rem" : size === "md" ? "1.25rem" : "1.5rem",
+	}}
 >
-    button {
-        all: unset;
-        color: #fff;
+button {
+	all: unset;
+	color: #fff;
 
-        width: var(--size);
-        height: var(--size);
+	width: var(--size);
+	height: var(--size);
 
-        cursor: pointer;
-        transition: transform 150ms ease-in-out;
-    }
+	cursor: pointer;
+	transition: transform 150ms ease-in-out;
+}
 
-    button:active {
-        transform: scale(0.9);
-    }
+button:active {
+	transform: scale(0.9);
+}
 
-    button {
-        position: relative;
-        display: inline-block;
-    }
+button {
+	position: relative;
+	display: inline-block;
+}
 </style>
 
 <style lang="scss">
@@ -64,6 +64,6 @@ export type ButtonProps = Props;
 </style>
 
 <button {...props}>
-    {tooltip && <span class="tooltip-text tooltip-top">{tooltip}</span>}
-    <slot />
+	{tooltip && <span class="tooltip-text tooltip-top">{tooltip}</span>}
+	<slot />
 </button>

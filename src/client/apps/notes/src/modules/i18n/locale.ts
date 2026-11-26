@@ -4,10 +4,10 @@ export const defaultLocale = "en";
 
 export type Locale = (typeof locales)[number];
 
-export const getLocale = function (url: URL) {
-  const [, locale] = url.pathname.split("/");
-  if ((locales as readonly string[]).includes(locale)) {
-    return locale as Locale;
-  }
-  return defaultLocale;
+export const getLocale = (url: URL) => {
+	const [, locale] = url.pathname.split("/");
+	if ((locales as readonly string[]).includes(locale)) {
+		return locale as Locale;
+	}
+	return defaultLocale;
 };

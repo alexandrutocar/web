@@ -45,12 +45,12 @@ const t = useTranslations(locale);
 </style>
 
 <Layout
-    console={[[`alex@lumine:~/${locale}/${t("notes")}/ > `, 25]]}
-    locale={locale}
-    title={t("title")}
+	console={[[`alex@lumine:~/${locale}/${t("notes")}/ > `, 25]]}
+	locale={locale}
+	title={t("title")}
 >
-    <div class="container">
-        <Notes />
-    </div>
-    <Head slot="head"/>
+	<div class="container">
+		<Notes />
+	</div>
+	<Head slot="head" />
 </Layout>

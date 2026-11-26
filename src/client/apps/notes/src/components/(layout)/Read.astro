@@ -4,38 +4,36 @@ import Layout from "~/components/(layout)/Common.astro";
 import Line from "~/components/(console)/Line.astro";
 
 interface Props {
-    console: [string, number][];
-    locale: string;
-    title: string;
+	console: [string, number][];
+	locale: string;
+	title: string;
 }
 
 const { console, locale, title } = Astro.props;
 ---
 
 <Layout title={title} locale={locale}>
-    <slot name="head" slot="head" />
-    <header>
-        <Console data-console={JSON.stringify(console)}>
-            {console.map(([text]) => <Line>{text}</Line>)}
-        </Console>
-    </header>
-    <slot />
+	<slot name="head" slot="head" />
+	<header>
+		<Console data-console={JSON.stringify(console)}>
+			{console.map(([text]) => <Line>{text}</Line>)}
+		</Console>
+	</header>
+	<slot />
 </Layout>
 
 <script>
-    import { animate } from "~/components/(console)/Console.animate.ts";
+import { animate } from "~/components/(console)/Console.animate.ts";
 
-    console.log(document.querySelectorAll<HTMLElement>("[data-console]"));
+console.log(document.querySelectorAll<HTMLElement>("[data-console]"));
 
-    for (const element of document.querySelectorAll<HTMLElement>(
-        "[data-console]",
-    )) {
-        const lines: [string, number][] = JSON.parse(
-            element.dataset.console ?? "[]",
-        );
+for (const element of document.querySelectorAll<HTMLElement>(
+	"[data-console]",
+)) {
+	const lines: [string, number][] = JSON.parse(element.dataset.console ?? "[]");
 
-        lines.forEach(([text, drag], index) => {
-            animate(index, text, drag);
-        });
-    }
+	lines.forEach(([text, drag], index) => {
+		animate(index, text, drag);
+	});
+}
 </script>

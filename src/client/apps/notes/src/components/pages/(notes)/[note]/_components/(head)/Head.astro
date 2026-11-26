@@ -1,19 +1,19 @@
 ---
 import Head from "~/components/(common)/Head.astro";
 import {
-    getAlternates,
-    getNotePath,
-    getNotesIndex,
-    type NoteEntryWithImplicitMetadata,
+	getAlternates,
+	getNotePath,
+	getNotesIndex,
+	type NoteEntryWithImplicitMetadata,
 } from "~/modules/content/notes";
 import { useTranslations } from "~/modules/i18n/translations";
 
 type Props = { entry: NoteEntryWithImplicitMetadata };
 
 const {
-    entry: {
-        implicitMetadata: { locale, count, slug },
-    },
+	entry: {
+		implicitMetadata: { locale, count, slug },
+	},
 } = Astro.props;
 
 const alternates = await getAlternates(count);
@@ -21,12 +21,12 @@ const alternates = await getAlternates(count);
 const index = await getNotesIndex().then(({ by }) => by.count);
 
 const { first, last, next, previous } = {
-    // First/Last
-    first: index.get(1)?.get(locale),
-    last: index.get(Math.max(...index.keys()))?.get(locale),
-    // Next/Prev
-    next: index.get(count + 1)?.get(locale),
-    previous: index.get(count - 1)?.get(locale),
+	// First/Last
+	first: index.get(1)?.get(locale),
+	last: index.get(Math.max(...index.keys()))?.get(locale),
+	// Next/Prev
+	next: index.get(count + 1)?.get(locale),
+	previous: index.get(count - 1)?.get(locale),
 };
 
 // Translations
@@ -34,61 +34,39 @@ const { first, last, next, previous } = {
 const t = useTranslations(locale);
 ---
 
-<link rel="canonical" href={`${getNotePath(locale, slug)}`} />
+<link rel="canonical" href={`${getNotePath(locale, slug)}`}>
 
-<!-- Localization (+ Content Negotiation) -->{
-    alternates.map(({ data: { title }, implicitMetadata: { slug } }) => (
-        <link
-            rel="alternate"
-            href={getNotePath(locale, slug)}
-            hreflang={locale}
-            title={title}
-        />
-    ))
-}
-{
-    alternates.map(({ data: { title }, implicitMetadata: { slug } }) => (
-        <link
-            rel="alternate"
-            href={`${getNotePath(locale, slug)}.md`}
-            hreflang={locale}
-            type="text/markdown"
-            title={`${title} (${t("title.format.md", locale)})`}
-        />
-    ))
-}
+<!-- Localization (+ Content Negotiation) -->{alternates.map(
+	({ data: { title }, implicitMetadata: { slug } }) => (
+		<link
+			rel="alternate"
+			href={getNotePath(locale, slug)}
+			hreflang={locale}
+			title={title}
+		/>
+	),
+)}
+{alternates.map(({ data: { title }, implicitMetadata: { slug } }) => (
+	<link
+		rel="alternate"
+		href={`${getNotePath(locale, slug)}.md`}
+		hreflang={locale}
+		type="text/markdown"
+		title={`${title} (${t("title.format.md", locale)})`}
+	/>
+))}
 <!-- Pagination (First/Last Next/Previous) -->
-{
-    first && (
-        <link
-            rel="first"
-            href={getNotePath(locale, first.implicitMetadata.slug)}
-        />
-    )
-}
-{
-    last && (
-        <link
-            rel="last"
-            href={getNotePath(locale, last.implicitMetadata.slug)}
-        />
-    )
-}
-{
-    next && (
-        <link
-            rel="next"
-            href={getNotePath(locale, next.implicitMetadata.slug)}
-        />
-    )
-}
-{
-    previous && (
-        <link
-            rel="prev"
-            href={getNotePath(locale, previous.implicitMetadata.slug)}
-        />
-    )
-}
+{first && (
+	<link rel="first" href={getNotePath(locale, first.implicitMetadata.slug)} />
+)}
+{last && (
+	<link rel="last" href={getNotePath(locale, last.implicitMetadata.slug)} />
+)}
+{next && (
+	<link rel="next" href={getNotePath(locale, next.implicitMetadata.slug)} />
+)}
+{previous && (
+	<link rel="prev" href={getNotePath(locale, previous.implicitMetadata.slug)} />
+)}
 
 <Head />

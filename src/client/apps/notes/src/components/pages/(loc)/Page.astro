@@ -7,8 +7,8 @@ import { getLocale } from "~/modules/i18n/locale";
 import Link from "~/components/custom/Link.astro";
 
 interface Props {
-    locale: string;
-    title: string;
+	locale: string;
+	title: string;
 }
 
 const { locale, title } = Astro.props;
@@ -56,8 +56,8 @@ const t = useTranslations(getLocale(Astro.url));
 </style>
 
 <Layout console={[[`alex@lumine:~/ > `, 25]]} locale={locale} title={title}>
-    <div class="container">
-        <Link href="/de/notizen" style="font-size:5rem">Deutsch</Link>
-        <Link href="/en/notes" style="font-size:5rem">English</Link>
-    </div>
+	<div class="container">
+		<Link href="/de/notizen" style="font-size:5rem">Deutsch</Link>
+		<Link href="/en/notes" style="font-size:5rem">English</Link>
+	</div>
 </Layout>

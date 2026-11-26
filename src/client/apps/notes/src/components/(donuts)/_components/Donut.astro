@@ -2,163 +2,164 @@
 import type { HTMLAttributes } from "astro/types";
 
 interface DonutStyle {
-    /** Horizontal position of the donut's centre — any length, e.g. "10%", "2rem". */
-    x?: string;
-    /** Vertical position of the donut's centre. */
-    y?: string;
-    /** Rotation, with a unit: "180deg", "-116.22deg". */
-    rotate?: string;
-    /** 1 renders the frame at its natural size. */
-    scale?: number | string;
-    /** Blur radius, e.g. "10px". The frosting lives here now that the donuts
-     *  paint above their backdrop rather than beneath it. */
-    blur?: string;
-    /** 0 to 1. */
-    opacity?: number | string;
+	/** Horizontal position of the donut's centre — any length, e.g. "10%", "2rem". */
+	x?: string;
+	/** Vertical position of the donut's centre. */
+	y?: string;
+	/** Rotation, with a unit: "180deg", "-116.22deg". */
+	rotate?: string;
+	/** 1 renders the frame at its natural size. */
+	scale?: number | string;
+	/** Blur radius, e.g. "10px". The frosting lives here now that the donuts
+	 *  paint above their backdrop rather than beneath it. */
+	blur?: string;
+	/** 0 to 1. */
+	opacity?: number | string;
 }
 
 type Props = HTMLAttributes<"pre"> &
-    DonutStyle & {
-        /** Overrides for 768px and below. Anything left out keeps its base value. */
-        sm?: DonutStyle;
-    };
+	DonutStyle & {
+		/** Overrides for 768px and below. Anything left out keeps its base value. */
+		sm?: DonutStyle;
+	};
 
 const {
-    class: className,
-    x,
-    y,
-    rotate,
-    scale,
-    blur,
-    opacity,
-    sm,
-    ...attrs
+	class: className,
+	x,
+	y,
+	rotate,
+	scale,
+	blur,
+	opacity,
+	sm,
+	...attrs
 } = Astro.props;
 
 /** `none` rather than `blur(0)`: a zero-radius filter still forces a
  *  compositing layer, which is exactly the cost small screens are avoiding. */
 const toFilter = (radius?: string) =>
-    radius === undefined
-        ? undefined
-        : parseFloat(radius) === 0
-          ? "none"
-          : `blur(${radius})`;
+	radius === undefined
+		? undefined
+		: parseFloat(radius) === 0
+			? "none"
+			: `blur(${radius})`;
 
 /* Placement travels as inline custom properties rather than as a class the
    parent styles. Inline styles ignore Astro's scoping, so a parent can position
    a donut without its scope marker having to survive the component boundary —
    the failure mode that silently dropped every offset before. */
 const placement =
-    Object.entries({
-        "--donut-x": x,
-        "--donut-y": y,
-        "--donut-rotate": rotate,
-        "--donut-scale": scale,
-        "--donut-filter": toFilter(blur),
-        "--donut-opacity": opacity,
-        "--donut-x-sm": sm?.x,
-        "--donut-y-sm": sm?.y,
-        "--donut-rotate-sm": sm?.rotate,
-        "--donut-scale-sm": sm?.scale,
-        "--donut-filter-sm": toFilter(sm?.blur),
-        "--donut-opacity-sm": sm?.opacity,
-    })
-        .filter(([, value]) => value !== undefined)
-        .map(([name, value]) => `${name}: ${value}`)
-        .join("; ") || undefined;
+	Object.entries({
+		"--donut-x": x,
+		"--donut-y": y,
+		"--donut-rotate": rotate,
+		"--donut-scale": scale,
+		"--donut-filter": toFilter(blur),
+		"--donut-opacity": opacity,
+		"--donut-x-sm": sm?.x,
+		"--donut-y-sm": sm?.y,
+		"--donut-rotate-sm": sm?.rotate,
+		"--donut-scale-sm": sm?.scale,
+		"--donut-filter-sm": toFilter(sm?.blur),
+		"--donut-opacity-sm": sm?.opacity,
+	})
+		.filter(([, value]) => value !== undefined)
+		.map(([name, value]) => `${name}: ${value}`)
+		.join("; ") || undefined;
 ---
 
 <style>
-    ascii-donut {
-        /* Exact frame geometry, shared by the static fallback below and every
+ascii-donut {
+	/* Exact frame geometry, shared by the static fallback below and every
            frame the script paints: 79 glyphs across, 25 rows down. */
-        --donut-columns: 79;
-        --donut-rows: 25;
-        --donut-font-size: 0.5rem;
+	--donut-columns: 79;
+	--donut-rows: 25;
+	--donut-font-size: 0.5rem;
 
-        /* Defaults for anything a caller leaves out. Centring an unplaced donut
+	/* Defaults for anything a caller leaves out. Centring an unplaced donut
            beats letting it fall back to its static position: out-of-flow
            siblings all share that position, so unplaced donuts would silently
            stack in the container's top-left corner. */
-        --donut-x: 50%;
-        --donut-y: 50%;
-        --donut-rotate: 0deg;
-        --donut-scale: 1;
-        --donut-filter: none;
-        --donut-opacity: 1;
+	--donut-x: 50%;
+	--donut-y: 50%;
+	--donut-rotate: 0deg;
+	--donut-scale: 1;
+	--donut-filter: none;
+	--donut-opacity: 1;
 
-        position: absolute;
-        display: block;
-        /* Shrink-wraps the frame so `rotate`/`scale` pivot around the donut
+	position: absolute;
+	display: block;
+	/* Shrink-wraps the frame so `rotate`/`scale` pivot around the donut
            itself instead of around a block as wide as its container. */
-        width: max-content;
+	width: max-content;
 
-        /* Placement is by centre: `x`/`y` mark where the middle of the donut
+	/* Placement is by centre: `x`/`y` mark where the middle of the donut
            sits, at any angle or scale. `translate` resolves against the
            unscaled box and applies before `rotate`/`scale`, so the centring
            holds regardless of the other two. */
-        left: var(--donut-x);
-        top: var(--donut-y);
-        translate: -50% -50%;
-        rotate: var(--donut-rotate);
-        scale: var(--donut-scale);
-        transform-origin: center;
+	left: var(--donut-x);
+	top: var(--donut-y);
+	translate: -50% -50%;
+	rotate: var(--donut-rotate);
+	scale: var(--donut-scale);
+	transform-origin: center;
 
-        /* The donut frosts itself. It paints above its backdrop rather than
+	/* The donut frosts itself. It paints above its backdrop rather than
            beneath it, so a `backdrop-filter` on any ancestor would have nothing
            of the donut to sample. */
-        filter: var(--donut-filter);
-        opacity: var(--donut-opacity);
+	filter: var(--donut-filter);
+	opacity: var(--donut-opacity);
 
-        pointer-events: none;
-        user-select: none;
-    }
+	pointer-events: none;
+	user-select: none;
+}
 
-    /* Custom properties are the indirection that makes responsive placement
+/* Custom properties are the indirection that makes responsive placement
        work: the props above set the variables, and this rule picks which ones
        to read. Setting `left`/`top` inline instead would beat any media query.
        Each `-sm` value is optional and falls back to its base counterpart, so a
        donut only declares what actually changes on small screens. */
-    @media screen and (max-width: 768px) {
-        ascii-donut {
-            left: var(--donut-x-sm, var(--donut-x));
-            top: var(--donut-y-sm, var(--donut-y));
-            rotate: var(--donut-rotate-sm, var(--donut-rotate));
-            scale: var(--donut-scale-sm, var(--donut-scale));
-            filter: var(--donut-filter-sm, var(--donut-filter));
-            opacity: var(--donut-opacity-sm, var(--donut-opacity));
-        }
-    }
+@media screen and (max-width: 768px) {
+	ascii-donut {
+		left: var(--donut-x-sm, var(--donut-x));
+		top: var(--donut-y-sm, var(--donut-y));
+		rotate: var(--donut-rotate-sm, var(--donut-rotate));
+		scale: var(--donut-scale-sm, var(--donut-scale));
+		filter: var(--donut-filter-sm, var(--donut-filter));
+		opacity: var(--donut-opacity-sm, var(--donut-opacity));
+	}
+}
 
-    pre {
-        /* Static: the host owns placement, so one set of offsets moves the
+pre {
+	/* Static: the host owns placement, so one set of offsets moves the
            donut rather than two competing boxes. */
-        position: static;
-        margin: 0;
-        /* Without a fallback, a proportional font shears the static frame too. */
-        font-family: Tamzen, ui-monospace, SFMono-Regular, monospace;
-        font-size: var(--donut-font-size);
-        line-height: 1;
-        /* One `ch` is one glyph in a monospace face and `line-height: 1` makes
+	position: static;
+	margin: 0;
+	/* Without a fallback, a proportional font shears the static frame too. */
+	font-family: Tamzen, ui-monospace, SFMono-Regular, monospace;
+	font-size: var(--donut-font-size);
+	line-height: 1;
+	/* One `ch` is one glyph in a monospace face and `line-height: 1` makes
            one row exactly `1em`, so the box is the frame's true size and the
            handover from fallback to animation reflows nothing. */
-        width: calc(var(--donut-columns) * 1ch);
-        height: calc(var(--donut-rows) * 1em);
-        overflow: hidden;
-        overflow: clip;
-        white-space: pre;
-        /* Inherited centring would offset each row independently and tear the
+	width: calc(var(--donut-columns) * 1ch);
+	height: calc(var(--donut-rows) * 1em);
+	overflow: hidden;
+	overflow: clip;
+	white-space: pre;
+	/* Inherited centring would offset each row independently and tear the
            torus apart. */
-        text-align: left;
-        /* The frame is a fixed-size island repainted ~20x a second. */
-        contain: strict;
-    }
+	text-align: left;
+	/* The frame is a fixed-size island repainted ~20x a second. */
+	contain: strict;
+}
 </style>
 
 <ascii-donut class={className} style={placement}>
-    <pre
-        aria-hidden="true"
-        {...attrs}>                                                                               
+	<pre
+		aria-hidden="true"
+		{...attrs}
+	>                                                                               
                                                                                
                                  @@$$$$$$$$$$@@                                
                              $$$$##############$$$$                            
@@ -187,214 +188,210 @@ const placement =
 </ascii-donut>
 
 <script>
-    /* ── Screen ─────────────────────────────────────────────────────────── */
+/* ── Screen ─────────────────────────────────────────────────────────── */
 
-    const COLUMNS = 80;
-    const ROWS = 25;
-    const CELLS = COLUMNS * ROWS; // 2000 — the old magic `Y`
+const COLUMNS = 80;
+const ROWS = 25;
+const CELLS = COLUMNS * ROWS; // 2000 — the old magic `Y`
 
-    /** The last column of every row holds "\n", so glyphs stop one short. */
-    const LAST_GLYPH_COLUMN = COLUMNS - 2; // 78
-    /** The projection never reaches the bottom rows (the old `m < 22`). */
-    const LAST_GLYPH_ROW = 21;
+/** The last column of every row holds "\n", so glyphs stop one short. */
+const LAST_GLYPH_COLUMN = COLUMNS - 2; // 78
+/** The projection never reaches the bottom rows (the old `m < 22`). */
+const LAST_GLYPH_ROW = 21;
 
-    /* ── Torus geometry ─────────────────────────────────────────────────── */
+/* ── Torus geometry ─────────────────────────────────────────────────── */
 
-    const R1 = 1; // radius of the tube
-    const R2 = 2; // distance from the origin to the centre of the tube
-    const K2 = 5; // distance from the camera to the torus
+const R1 = 1; // radius of the tube
+const R2 = 2; // distance from the origin to the centre of the tube
+const K2 = 5; // distance from the camera to the torus
 
-    /** Angle around the tube's cross-section. */
-    const THETA_SPACING = 0.0175;
-    /** Angle around the torus' axis of revolution. */
-    const PHI_SPACING = 0.0075;
+/** Angle around the tube's cross-section. */
+const THETA_SPACING = 0.0175;
+/** Angle around the torus' axis of revolution. */
+const PHI_SPACING = 0.0075;
 
-    /* ── Projection ─────────────────────────────────────────────────────── */
+/* ── Projection ─────────────────────────────────────────────────────── */
 
-    const X_OFFSET = 40;
-    const X_SCALE = 30;
-    const Y_OFFSET = 12;
-    const Y_SCALE = 15;
+const X_OFFSET = 40;
+const X_SCALE = 30;
+const Y_OFFSET = 12;
+const Y_SCALE = 15;
 
-    /** Darkest to brightest. Index 0 covers every surface facing away. */
-    const LUMINANCE_RAMP = ".,-~:;=!*#$@";
-    const MAX_LUMINANCE = LUMINANCE_RAMP.length - 1;
+/** Darkest to brightest. Index 0 covers every surface facing away. */
+const LUMINANCE_RAMP = ".,-~:;=!*#$@";
+const MAX_LUMINANCE = LUMINANCE_RAMP.length - 1;
 
-    /* ── Animation ──────────────────────────────────────────────────────── */
+/* ── Animation ──────────────────────────────────────────────────────── */
 
-    /** Rotation applied between frames — unrelated to the sweep spacings
-     *  above, which the original conflated because the values happen to match. */
-    const SPIN_X = 0.0175;
-    const SPIN_Z = 0.0075;
-    const FRAME_INTERVAL_MS = 50;
+/** Rotation applied between frames — unrelated to the sweep spacings
+ *  above, which the original conflated because the values happen to match. */
+const SPIN_X = 0.0175;
+const SPIN_Z = 0.0075;
+const FRAME_INTERVAL_MS = 50;
 
-    const TAU = Math.PI * 2;
+const TAU = Math.PI * 2;
 
-    /* ── Precomputed trigonometry ───────────────────────────────────────── */
+/* ── Precomputed trigonometry ───────────────────────────────────────── */
 
-    /**
-     * Theta and phi are swept with fixed spacing, so their sines and cosines
-     * are identical on every frame. Computing them once removes roughly
-     * 600k `Math.sin`/`Math.cos` calls per frame.
-     */
-    function sweep(spacing: number) {
-        const steps = Math.ceil(TAU / spacing);
-        const sin = new Float64Array(steps);
-        const cos = new Float64Array(steps);
+/**
+ * Theta and phi are swept with fixed spacing, so their sines and cosines
+ * are identical on every frame. Computing them once removes roughly
+ * 600k `Math.sin`/`Math.cos` calls per frame.
+ */
+function sweep(spacing: number) {
+	const steps = Math.ceil(TAU / spacing);
+	const sin = new Float64Array(steps);
+	const cos = new Float64Array(steps);
 
-        for (let step = 0; step < steps; step++) {
-            const angle = step * spacing;
-            sin[step] = Math.sin(angle);
-            cos[step] = Math.cos(angle);
-        }
+	for (let step = 0; step < steps; step++) {
+		const angle = step * spacing;
+		sin[step] = Math.sin(angle);
+		cos[step] = Math.cos(angle);
+	}
 
-        return { steps, sin, cos };
-    }
+	return { steps, sin, cos };
+}
 
-    const THETA = sweep(THETA_SPACING);
-    const PHI = sweep(PHI_SPACING);
-    /** Distance from the axis of revolution — depends on theta alone. */
-    const CIRCLE_X = Float64Array.from(THETA.cos, (cos) => R2 + R1 * cos);
+const THETA = sweep(THETA_SPACING);
+const PHI = sweep(PHI_SPACING);
+/** Distance from the axis of revolution — depends on theta alone. */
+const CIRCLE_X = Float64Array.from(THETA.cos, (cos) => R2 + R1 * cos);
 
-    /* ── Renderer ───────────────────────────────────────────────────────── */
+/* ── Renderer ───────────────────────────────────────────────────────── */
 
-    const depth = new Float64Array(CELLS);
-    const frame = new Array<string>(CELLS);
+const depth = new Float64Array(CELLS);
+const frame = new Array<string>(CELLS);
 
-    let angleX = 0;
-    let angleZ = 0;
+let angleX = 0;
+let angleZ = 0;
 
-    function clearFrame(): void {
-        frame.fill(" ");
-        for (let row = 0; row < ROWS; row++) {
-            frame[row * COLUMNS + COLUMNS - 1] = "\n";
-        }
-        depth.fill(0);
-    }
+function clearFrame(): void {
+	frame.fill(" ");
+	for (let row = 0; row < ROWS; row++) {
+		frame[row * COLUMNS + COLUMNS - 1] = "\n";
+	}
+	depth.fill(0);
+}
 
-    function renderFrame(): string {
-        angleX += SPIN_X;
-        angleZ += SPIN_Z;
-        clearFrame();
+function renderFrame(): string {
+	angleX += SPIN_X;
+	angleZ += SPIN_Z;
+	clearFrame();
 
-        const cosX = Math.cos(angleX);
-        const sinX = Math.sin(angleX);
-        const cosZ = Math.cos(angleZ);
-        const sinZ = Math.sin(angleZ);
+	const cosX = Math.cos(angleX);
+	const sinX = Math.sin(angleX);
+	const cosZ = Math.cos(angleZ);
+	const sinZ = Math.sin(angleZ);
 
-        for (let t = 0; t < THETA.steps; t++) {
-            const cosTheta = THETA.cos[t]!;
-            const sinTheta = THETA.sin[t]!;
-            const circleX = CIRCLE_X[t]!;
+	for (let t = 0; t < THETA.steps; t++) {
+		const cosTheta = THETA.cos[t]!;
+		const sinTheta = THETA.sin[t]!;
+		const circleX = CIRCLE_X[t]!;
 
-            for (let p = 0; p < PHI.steps; p++) {
-                const cosPhi = PHI.cos[p]!;
-                const sinPhi = PHI.sin[p]!;
+		for (let p = 0; p < PHI.steps; p++) {
+			const cosPhi = PHI.cos[p]!;
+			const sinPhi = PHI.sin[p]!;
 
-                // Distance to the camera, and its reciprocal — which doubles
-                // as the depth key, since larger means nearer.
-                const z = sinPhi * circleX * sinX + sinTheta * cosX + K2;
-                const invZ = 1 / z;
+			// Distance to the camera, and its reciprocal — which doubles
+			// as the depth key, since larger means nearer.
+			const z = sinPhi * circleX * sinX + sinTheta * cosX + K2;
+			const invZ = 1 / z;
 
-                const projected = sinPhi * circleX * cosX - sinTheta * sinX;
+			const projected = sinPhi * circleX * cosX - sinTheta * sinX;
 
-                // `| 0` truncates towards zero, as in the original.
-                const column =
-                    (X_OFFSET +
-                        X_SCALE *
-                            invZ *
-                            (cosPhi * circleX * cosZ - projected * sinZ)) |
-                    0;
-                const row =
-                    (Y_OFFSET +
-                        Y_SCALE *
-                            invZ *
-                            (cosPhi * circleX * sinZ + projected * cosZ)) |
-                    0;
+			// `| 0` truncates towards zero, as in the original.
+			const column =
+				(X_OFFSET +
+					X_SCALE * invZ * (cosPhi * circleX * cosZ - projected * sinZ)) |
+				0;
+			const row =
+				(Y_OFFSET +
+					Y_SCALE * invZ * (cosPhi * circleX * sinZ + projected * cosZ)) |
+				0;
 
-                if (
-                    column < 0 ||
-                    column > LAST_GLYPH_COLUMN ||
-                    row < 0 ||
-                    row > LAST_GLYPH_ROW
-                )
-                    continue;
+			if (
+				column < 0 ||
+				column > LAST_GLYPH_COLUMN ||
+				row < 0 ||
+				row > LAST_GLYPH_ROW
+			)
+				continue;
 
-                const cell = column + COLUMNS * row;
-                if (invZ <= depth[cell]!) continue;
+			const cell = column + COLUMNS * row;
+			if (invZ <= depth[cell]!) continue;
 
-                // Surface normal · light direction, scaled onto the ramp.
-                // Deliberately computed after the depth test: most points are
-                // discarded before it is ever needed.
-                const luminance =
-                    (8 *
-                        ((sinTheta * sinX - sinPhi * cosTheta * cosX) * cosZ -
-                            sinPhi * cosTheta * sinX -
-                            sinTheta * cosX -
-                            cosPhi * cosTheta * sinZ)) |
-                    0;
+			// Surface normal · light direction, scaled onto the ramp.
+			// Deliberately computed after the depth test: most points are
+			// discarded before it is ever needed.
+			const luminance =
+				(8 *
+					((sinTheta * sinX - sinPhi * cosTheta * cosX) * cosZ -
+						sinPhi * cosTheta * sinX -
+						sinTheta * cosX -
+						cosPhi * cosTheta * sinZ)) |
+				0;
 
-                depth[cell] = invZ;
-                frame[cell] =
-                    LUMINANCE_RAMP[
-                        luminance <= 0 ? 0 : Math.min(luminance, MAX_LUMINANCE)
-                    ]!;
-            }
-        }
+			depth[cell] = invZ;
+			frame[cell] =
+				LUMINANCE_RAMP[
+					luminance <= 0 ? 0 : Math.min(luminance, MAX_LUMINANCE)
+				]!;
+		}
+	}
 
-        return frame.join("");
-    }
+	return frame.join("");
+}
 
-    /* ── Element ────────────────────────────────────────────────────────── */
+/* ── Element ────────────────────────────────────────────────────────── */
 
-    /** Every mounted screen. One render feeds all of them. */
-    const screens = new Set<HTMLPreElement>();
+/** Every mounted screen. One render feeds all of them. */
+const screens = new Set<HTMLPreElement>();
 
-    let frameHandle = 0;
-    let lastFrameTime = 0;
+let frameHandle = 0;
+let lastFrameTime = 0;
 
-    function tick(now: number): void {
-        frameHandle = requestAnimationFrame(tick);
+function tick(now: number): void {
+	frameHandle = requestAnimationFrame(tick);
 
-        if (now - lastFrameTime < FRAME_INTERVAL_MS) return;
-        lastFrameTime = now;
+	if (now - lastFrameTime < FRAME_INTERVAL_MS) return;
+	lastFrameTime = now;
 
-        const text = renderFrame();
-        for (const screen of screens) screen.textContent = text;
-    }
+	const text = renderFrame();
+	for (const screen of screens) screen.textContent = text;
+}
 
-    function syncLoop(): void {
-        if (screens.size > 0 && frameHandle === 0) {
-            lastFrameTime = 0;
-            frameHandle = requestAnimationFrame(tick);
-        } else if (screens.size === 0 && frameHandle !== 0) {
-            cancelAnimationFrame(frameHandle);
-            frameHandle = 0;
-        }
-    }
+function syncLoop(): void {
+	if (screens.size > 0 && frameHandle === 0) {
+		lastFrameTime = 0;
+		frameHandle = requestAnimationFrame(tick);
+	} else if (screens.size === 0 && frameHandle !== 0) {
+		cancelAnimationFrame(frameHandle);
+		frameHandle = 0;
+	}
+}
 
-    class AsciiDonut extends HTMLElement {
-        #screen: HTMLPreElement | null = null;
+class AsciiDonut extends HTMLElement {
+	#screen: HTMLPreElement | null = null;
 
-        connectedCallback(): void {
-            // The server-rendered frame stays put when motion is unwelcome.
-            if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+	connectedCallback(): void {
+		// The server-rendered frame stays put when motion is unwelcome.
+		if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-            this.#screen = this.querySelector("pre");
-            if (!this.#screen) return;
+		this.#screen = this.querySelector("pre");
+		if (!this.#screen) return;
 
-            screens.add(this.#screen);
-            syncLoop();
-        }
+		screens.add(this.#screen);
+		syncLoop();
+	}
 
-        disconnectedCallback(): void {
-            if (this.#screen) screens.delete(this.#screen);
-            this.#screen = null;
-            syncLoop();
-        }
-    }
+	disconnectedCallback(): void {
+		if (this.#screen) screens.delete(this.#screen);
+		this.#screen = null;
+		syncLoop();
+	}
+}
 
-    if (!customElements.get("ascii-donut")) {
-        customElements.define("ascii-donut", AsciiDonut);
-    }
+if (!customElements.get("ascii-donut")) {
+	customElements.define("ascii-donut", AsciiDonut);
+}
 </script>

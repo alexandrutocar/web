@@ -2,24 +2,24 @@
 import type { HTMLAttributes } from "astro/types";
 
 type Props = HTMLAttributes<"a"> & {
-    tooltip?: string;
-    size?: "sm" | "md" | "lg";
-    icon?: boolean;
+	tooltip?: string;
+	size?: "sm" | "md" | "lg";
+	icon?: boolean;
 };
 const { tooltip, size = "md", icon = false, ...props } = Astro.props;
 ---
 
 <style
-    lang="scss"
-    define:vars={{
-        sw: icon
-            ? size === "sm"
-                ? "0.75rem"
-                : size === "md"
-                  ? "1rem"
-                  : "1.5rem"
-            : "auto",
-    }}
+	lang="scss"
+	define:vars={{
+		sw: icon
+			? size === "sm"
+				? "0.75rem"
+				: size === "md"
+					? "1rem"
+					: "1.5rem"
+			: "auto",
+	}}
 >
     a {
         all: unset;
@@ -69,6 +69,6 @@ const { tooltip, size = "md", icon = false, ...props } = Astro.props;
 </style>
 
 <a {...props}>
-    {tooltip && <span class="tooltip-text tooltip-top">{tooltip}</span>}
-    <slot />
+	{tooltip && <span class="tooltip-text tooltip-top">{tooltip}</span>}
+	<slot />
 </a>
