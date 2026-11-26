@@ -1,0 +1,4 @@
+packages:
+  - 'src/client/apps/*'
+allowBuilds:
+  '@parcel/watcher': true

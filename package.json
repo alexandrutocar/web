@@ -1,3 +1,4 @@
 {
-    "name": "web"
+	"name": "web",
+	"packageManager": "pnpm@12.9.0"
 }
