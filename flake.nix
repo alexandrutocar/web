@@ -75,7 +75,9 @@
               (with pkgs.from.latest; [
                 # Entwicklungswerkzeuge
                 alejandra
-
+              ])
+              (with pkgs; [
+                # Entwicklungswerkzeuge
                 biome
               ])
             ];
