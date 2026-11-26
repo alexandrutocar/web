@@ -1,17 +1,17 @@
 // @ts-check
-import { defineConfig } from "astro/config";
 
 import mdx from "@astrojs/mdx";
+import { defineConfig } from "astro/config";
 
-const site = Deno.env.get("SITE_URL");
+const site = process.env.SITE_URL;
 
-if (!site && Deno.env.get("NODE_ENV") == "production") {
-    throw new Error("SITE_URL environment variable is not set!");
+if (!site && process.env.NODE_ENV === "production") {
+	throw new Error("SITE_URL environment variable is not set!");
 }
 
 export default defineConfig({
-    publicDir: "assets",
-    outDir: ".build",
-    site,
-    integrations: [mdx()],
+	publicDir: "assets",
+	outDir: ".build",
+	site,
+	integrations: [mdx()],
 });

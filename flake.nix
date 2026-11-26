@@ -1,35 +1,51 @@
+# spell-checker: words gnumake nasm posix stdenv valgrind
 {
-  description = "ueuie.earth";
+  description = ''
+    Flows/Pipelines with "Inngest" (Go/Python/TypeScript)
+  '';
 
   inputs = {
-    nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixpkgs-unstable";
-
     devenv = {
       url = "github:cachix/devenv";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    latest = {
+      url = "github:nixos/nixpkgs?ref=nixpkgs-unstable";
     };
   };
 
   outputs = {self, ...} @ inputs: let
-    forSystems = inputs.nixpkgs-unstable.lib.genAttrs [
+    forSystems = inputs.latest.lib.genAttrs [
       "x86_64-linux"
     ];
 
-    mkPackages = system: pkgs:
+    mkPackages = system: pkgs: overlays:
       import pkgs {
-        inherit system;
+        inherit system overlays;
       };
   in {
     devShells = forSystems (system: let
-      pkgs = mkPackages system inputs.nixpkgs-unstable;
+      pkgs = mkPackages system inputs.devenv.inputs.nixpkgs (with self.overlays; [
+        pkgs_pass_through
+      ]);
     in {
       default = inputs.devenv.lib.mkShell {
         inherit inputs pkgs;
         modules = [
-          (_: {
+          ({
+            pkgs,
+            lib,
+            ...
+          }: let
+            inherit (lib.meta) getExe;
+          in {
             languages = {
-              deno = {
+              javascript = {
                 enable = true;
+
+                pnpm = {
+                  enable = true;
+                };
               };
 
               nix = {
@@ -41,16 +57,27 @@
               };
             };
 
-            git-hooks.hooks = {
-              alejandra.enable = true;
+            git-hooks = {
+              # Automatische Formatierung & Linting (Checks)
+              hooks = {
+                alejandra.enable = true;
 
-              denofmt.enable = true;
-
-              denolint.enable = true;
+                biome.enable = true;
+              };
             };
 
-            packages = with pkgs; [
-              alejandra
+            env = {
+              PUPPETEER_SKIP_DOWNLOAD = "true";
+              CHROME_PATH = getExe pkgs.from.latest.chromium;
+            };
+
+            packages = builtins.concatLists [
+              (with pkgs.from.latest; [
+                # Entwicklungswerkzeuge
+                alejandra
+
+                biome
+              ])
             ];
           })
         ];
@@ -59,9 +86,17 @@
 
     formatter = forSystems (
       system: let
-        pkgs = mkPackages system inputs.nixpkgs-unstable;
+        pkgs = mkPackages system inputs.latest [];
       in
         pkgs.alejandra
     );
+
+    overlays = {
+      pkgs_pass_through = final: super: {
+        from = {
+          latest = mkPackages super.stdenv.hostPlatform.system inputs.latest [];
+        };
+      };
+    };
   };
 }
