@@ -12,6 +12,7 @@ import {
 	type NoteEntryWithImplicitMetadata,
 } from "~/modules/content/notes";
 import Head from "./_components/(head)/Head.astro";
+import { HOSTNAME } from "~/modules/ui/text/hostname";
 
 export function getGetStaticPaths(locale: Locale) {
 	return async function getStaticPaths() {
@@ -98,7 +99,7 @@ const t = useTranslations(locale);
 
 <Layout
 	console={[
-		[`alex@lumine:~/${locale}/${t("notes")} >`, 15],
+		[`alex@${HOSTNAME}:~/${locale}/${t("notes")} >`, 15],
 		[`cat ${slug.slice(0, 12 + t("notes").length)}...`, 25],
 		[`...${slug.slice(-(13 + t("notes").length))}.md`, 50],
 	]}

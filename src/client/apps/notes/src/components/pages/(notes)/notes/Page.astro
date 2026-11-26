@@ -5,6 +5,7 @@ import Notes from "./_components/(notes)/Notes.astro";
 import { getLocale } from "~/modules/i18n/locale";
 import { useTranslations } from "~/modules/i18n/translations";
 import Head from "./_components/(head)/Head.astro";
+import { HOSTNAME } from "~/modules/ui/text/hostname";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -45,12 +46,12 @@ const t = useTranslations(locale);
 </style>
 
 <Layout
-	console={[[`alex@lumine:~/${locale}/${t("notes")}/ > `, 25]]}
-	locale={locale}
-	title={t("title")}
+    console={[[`alex@${HOSTNAME}:~/${locale}/${t("notes")}/ > `, 25]]}
+    locale={locale}
+    title={t("title")}
 >
-	<div class="container">
-		<Notes />
-	</div>
-	<Head slot="head" />
+    <div class="container">
+        <Notes />
+    </div>
+    <Head slot="head" />
 </Layout>

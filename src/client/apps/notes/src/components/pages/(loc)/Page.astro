@@ -5,6 +5,7 @@ import Button from "~/components/custom/Button.astro";
 import { useTranslations } from "~/modules/i18n/translations";
 import { getLocale } from "~/modules/i18n/locale";
 import Link from "~/components/custom/Link.astro";
+import { HOSTNAME } from "~/modules/ui/text/hostname";
 
 interface Props {
 	locale: string;
@@ -55,7 +56,7 @@ const t = useTranslations(getLocale(Astro.url));
     }
 </style>
 
-<Layout console={[[`alex@lumine:~/ > `, 25]]} locale={locale} title={title}>
+<Layout console={[[`alex@${HOSTNAME}:~/ > `, 25]]} locale={locale} title={title}>
 	<div class="container">
 		<Link href="/de/notizen" style="font-size:5rem">Deutsch</Link>
 		<Link href="/en/notes" style="font-size:5rem">English</Link>
