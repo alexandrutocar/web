@@ -11,5 +11,6 @@
 /node_modules
 
 # Pre-Commit
+.husky/_/*
 .pre-commit-config.yaml
 
